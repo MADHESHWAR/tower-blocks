@@ -11,17 +11,15 @@ provider "docker" {
   host = "npipe:////./pipe/docker_engine"
 }
 
-# 🔽 VARIABLES
 variable "container_name" {}
 variable "image_name" {}
 variable "external_port" {}
 
-# 🔽 IMAGE
 resource "docker_image" "app" {
-  name = var.image_name
+  name         = var.image_name
+  keep_locally = true
 }
 
-# 🔽 CONTAINER
 resource "docker_container" "web" {
   name  = var.container_name
   image = docker_image.app.image_id
