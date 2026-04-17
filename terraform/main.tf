@@ -28,4 +28,8 @@ resource "docker_container" "web" {
     internal = 80
     external = var.external_port
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
