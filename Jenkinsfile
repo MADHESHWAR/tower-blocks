@@ -37,18 +37,28 @@ pipeline {
             }
         }
 
-        stage('Terraform Destroy (Clean old)') {
+        stage('Terraform Destroy') {
             steps {
                 dir('terraform') {
-                    bat 'terraform destroy -auto-approve'
+                    bat '''
+                    terraform destroy -auto-approve ^
+                    -var "container_name=portfolio-container" ^
+                    -var "image_name=portfolio-app" ^
+                    -var "external_port=8085"
+                    '''
                 }
             }
         }
 
-        stage('Terraform Apply (Deploy)') {
+        stage('Terraform Apply') {
             steps {
                 dir('terraform') {
-                    bat '''terraform apply -auto-approve ^-var "container_name=portfolio-container" ^-var "image_name=nginx:latest" ^-var "external_port=8085"'''
+                    bat '''
+                    terraform apply -auto-approve ^
+                    -var "container_name=portfolio-container" ^
+                    -var "image_name=portfolio-app" ^
+                    -var "external_port=8085"
+                    '''
                 }
             }
         }
