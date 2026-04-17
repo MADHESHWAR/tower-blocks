@@ -21,6 +21,12 @@ pipeline {
             }
         }
 
+        stage('Cleanup Old Container') {
+            steps {
+                bat 'docker rm -f %CONTAINER_NAME% 2>nul'
+            }
+        }
+
         stage('Terraform Init') {
             steps {
                 dir('terraform') {
